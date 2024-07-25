@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embed Map Example</title>
+    <!-- Include the Google Maps API with the 'places' library -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <style>
+        /* Set the size of the map container */
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h2>Tell us your location</h2>
+    <!-- Create an input field for location -->
+    <input type="text" id="locationInput" placeholder="Type your location">
+
+    <!-- Create a map container -->
+    <div id="map"></div>
+
+    <script>
+        // Initialize the map
+        function initMap() {
+            // Set the initial map center to a default location
+            const defaultLocation = { lat: 0, lng: 0 };
+
+            // Create a map centered at the default location
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: defaultLocation,
+                zoom: 15, // Adjust the zoom level as needed
+            });
+
+            // Create a Places Autocomplete object for the location input
+            const autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('locationInput'),
+                { map, placeIdOnly: true }
+            );
+
+            // Listen for the 'place_changed' event when a user selects a location
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+
+                // Center the map on the selected location
+                map.setCenter(place.geometry.location);
+
+                // Optionally, you can retrieve more details about the selected place
+                console.log('Selected Place:', place);
+            });
+        }
+    </script>
+
+    <!-- Load the map when the page is loaded -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap"></script>
+</body>
+</html>
